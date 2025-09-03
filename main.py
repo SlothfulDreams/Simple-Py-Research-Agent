@@ -1,11 +1,13 @@
 from dotenv import load_dotenv
 from pydantic import BaseModel
-from langchain_openai import ChatOpenAI
-from langchain_anthropic import ChatAnthropic
-
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 load_dotenv()
 
-llm = ChatAnthropic(
-    model_name="claude-3-5-sonnet-latest",
+llm = ChatGoogleGenerativeAI(
+    model="gemini-2.5-flash",
+    temperature=0,
+    max_tokens=None,
+    timeout=None,
+    max_retries=2,
 )

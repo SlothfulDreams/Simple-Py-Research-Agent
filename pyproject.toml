@@ -8,6 +8,7 @@ dependencies = [
     "langchain>=0.3.27",
     "langchain-anthropic>=0.3.19",
     "langchain-community>=0.3.29",
+    "langchain-google-genai>=2.1.10",
     "langchain-openai>=0.3.32",
     "pydantic>=2.11.7",
     "python-dotenv>=1.1.1",
