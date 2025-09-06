@@ -4,7 +4,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
 from langchain.agents import create_tool_calling_agent, AgentExecutor
-from tools import search_tool
+from tools import search_tool, wiki_tool
 
 load_dotenv(".env.local")
 
@@ -20,7 +20,6 @@ llm = ChatGoogleGenerativeAI(
     max_tokens=None,
     timeout=None,
     max_retries=2,
-    google_search_grounding=False,  # Disable Google's built-in search
 )
 parser = PydanticOutputParser(pydantic_object=ResearchResponse)
 
@@ -40,16 +39,16 @@ prompt = ChatPromptTemplate.from_messages(
     ]
 ).partial(format_instructions=parser.get_format_instructions())
 
-tools = [search_tool]
+tools = [search_tool, wiki_tool]
 agent = create_tool_calling_agent(llm=llm, prompt=prompt, tools=tools)
 
 agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
-query = input("What do you want to know?")
-raw_response = agent_executor.invoke({"query": query})
 
+query = input("What do you want to know? ")
+
+raw_response = agent_executor.invoke({"query": query})
 try:
-    structured_output = parser.parse(raw_response["output"])
-    print(structured_output)
+       structured_output = parser.parse(raw_response["output"])
+       print(structured_output)
 except Exception as e:
-    print(f"Error parsing output: {e}", "Raw Response:", raw_response)
-#
+        print(f"Error parsing output: {e}", "Raw Response:", raw_response)
